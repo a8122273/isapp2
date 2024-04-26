@@ -16,9 +16,9 @@
         }
 
         async function doSelect() {
-            var sql = 'select * from Tweets order by time desc limit 20';
+            var search_words = document.getElementById('tf_search').value;
+            var sql = 'select * from Tweets where tweet like "%' + search_words + '%"';
             var objects = await osql.connect(sql);
-            console.log(objects);
             var html = '';
             html = html + '<ul>';
             for (var i = 0; i < objects.length; i++) {
@@ -35,6 +35,7 @@
 <body>
     <h1>Tweets</h1>
     <p>ツイート一覧</p>
+    検索内容：<input id="tf_search" type="textfield">
     <button onclick="button1Pressed()">X</button>
     <hr>
     <p id="result">xxxx</p>
