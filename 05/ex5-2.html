@@ -13,7 +13,6 @@
 
         function button1Pressed() {
             doInsert();
-            doSelect();
         }
 
         async function doInsert() {
@@ -29,7 +28,7 @@
             empty.value = '';
         }
 
-        async function doSelect() {
+        $(document).ready(async function doSelect() {
             //var search_words = document.getElementById('tf_search').value;
             var sql = 'select * from Tweets order by time desc limit 20';
             var objects = await osql.connect(sql);
@@ -45,7 +44,7 @@
             }
             html = html + '</table>';
             document.getElementById('result').innerHTML = html;
-        }
+        });
     </script>
     </script>
 
