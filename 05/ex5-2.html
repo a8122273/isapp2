@@ -28,7 +28,15 @@
             empty.value = '';
         }
 
-        $(document).ready(async function doSelect() {
+        var x;
+
+        $().ready(function () {
+            x = 0;
+            setInterval(doSelect, 1000);
+        });
+
+
+        async function doSelect() {
             //var search_words = document.getElementById('tf_search').value;
             var sql = 'select * from Tweets order by time desc limit 20';
             var objects = await osql.connect(sql);
@@ -44,7 +52,7 @@
             }
             html = html + '</table>';
             document.getElementById('result').innerHTML = html;
-        });
+        };
     </script>
     </script>
 
