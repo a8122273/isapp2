@@ -25,8 +25,8 @@
             console.log(objects);
 
             document.getElementById('result').innerHTML = "tweetしました";
-            let empty = document.getElementById('tf2');
-            empty.value = '';
+            document.getElementById('tf2').value = '';
+
         }
 
         async function doSelect() {
@@ -44,7 +44,7 @@
                 html = html + '</tr>';
             }
             html = html + '</table>';
-            document.getElementById('result').innerHTML = html;
+            document.getElementById('result2').innerHTML = html;
         }
     </script>
     </script>
@@ -60,6 +60,8 @@
     <button onclick="button1Pressed()">tweet</button>
     <br>
     <p id="result"></p>
+    <p>ツイート一覧</p>
+    <p id="result2"></p>
 </body>
 
 </html>
