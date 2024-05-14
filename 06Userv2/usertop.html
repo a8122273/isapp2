@@ -17,6 +17,10 @@
             var name = sessionStorage.getItem('username');
             document.getElementById("welcome").innerHTML = "ようこそ" + name + "さん";
         }
+
+        function ButtonAPressed() {
+            location.href = "update.html";
+        }
     </script>
 
 </head>
@@ -25,6 +29,7 @@
     <h1>ユーザトップ</h1>
     <p id="welcome"></p>
     <hr>
+    <button onclick="ButtonAPressed()">ユーザー情報変更</button>
 
 </body>
 
