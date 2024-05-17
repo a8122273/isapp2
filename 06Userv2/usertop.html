@@ -19,7 +19,8 @@
         }
 
         function ButtonAPressed() {
-            location.href = "update.html";
+            var name = sessionStorage.getItem('userid');
+            location.href = 'update.html?userid=' + name;
         }
     </script>
 
