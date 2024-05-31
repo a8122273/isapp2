@@ -35,7 +35,7 @@
             document.getElementById('result').innerHTML = html;
         }
 
-        var userID = "";
+
         async function execDelete(userID) {
             //var userID = document.getElementsByClassName("button_delete").value
             console.log(userID);
@@ -57,6 +57,7 @@
             var sql = `delete from Users where id="${userid}";`;
             var objects = osql.connect(sql);
             console.log(objects);
+            execSelect();
         }
     </script>
 
