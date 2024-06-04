@@ -13,7 +13,7 @@
         $().ready(function () {
             init();
             doSelect()
-            setInterval(doSelect, 2000,);
+            //setInterval(doSelect, 2000,);
 
         });
         function init() {
@@ -41,9 +41,14 @@
         }
 
         async function doSelect() {
+            var userid = osql.getParam('userid');
             //var search_words = document.getElementById('tf_search').value;
             var sql = 'select * from Tweets order by time desc limit 50';
             var objects = await osql.connect(sql);
+            var sql2 = 'select distinct toid from Follows where fromid = "' + userid + '";';
+            console.log(userid);
+            var follows = await osql.connect(sql2);
+
             var html = '';
             html = html + '<table border="1">';
             for (var i = 0; i < objects.length; i++) {
@@ -51,7 +56,16 @@
                 html = html + '<tr>';
                 html = html + '<td>' + object.id + '</td>';
                 html = html + '<td>' + object.name + '</td>';
-                html = html + '<td>' + '<button id="button_follow" value="' + object.id + '" onclick="ButtonFollow(\'' + object.name + '\')">フォローする</button>' + '</td>';
+                //フォローしていたらフォロー中と表示
+                var judge_number = await Follow_judge(follows, object.name);
+                console.log(judge_number);
+                if (judge_number == 1) {
+                    html = html + '<td>' + '<button>フォロー中</button>' + '</td>';
+                }
+                else {
+                    html = html + '<td>' + '<button id="button_follow_' + object.id + '" onclick="ButtonFollow(\'' + object.name + '\')">フォローする</button>' + '</td>';
+                }
+                //html = html + '<td>' + '<button id="button_follow_' + object.id + '" onclick="ButtonFollow(\'' + object.name + '\', \'button_follow_' + object.id + '\')">フォローする</button>' + '</td>';
                 html = html + '<td>' + object.tweet + '</td>';
                 html = html + '</tr>';
             }
@@ -59,6 +73,20 @@
             document.getElementById('result2').innerHTML = html;
         }
 
+
+        async function Follow_judge(objects2, follow_id) {
+            var number = 0;
+            for (var j = 0; j < objects2.length; j++) {
+                console.log(objects2[j].toid);
+                console.log(follow_id);
+                if (objects2[j].toid == follow_id) {
+                    number = 1;
+                    break;
+                }
+            }
+            console.log(number);
+            return number;
+        }
 
         async function ButtonFollow(To_userID) {
             console.log(To_userID);
@@ -70,6 +98,8 @@
             if (ans == true) {
                 var objects = await osql.connect(sql1);
                 document.getElementById("result3").innerHTML = To_userID + "をフォローしました！";
+                //document.getElementById(button_follow_id).innerHTML = "フォロー中";
+                doSelect()
             }
             else {
                 alert("キャンセルされました");
