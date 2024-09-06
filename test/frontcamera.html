@@ -4,13 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="../lib/jquery.min.js"></script>
     <script>
-        const cameraWidth = 400;
-        const cameraHeight = 800;
-
-        $(document).ready(function () {
-            incameraInitSmartphoneSupport();
-        });
-
         const incameraInitSmartphoneSupport = () => {
             const video = document.getElementById("camera");
             const isMobile = navigator.userAgent.match(/iPhone|Android/);
@@ -18,9 +11,7 @@
             const cameraSetting = {
                 audio: false,
                 video: {
-                    width: isMobile ? cameraHeight : cameraWidth,
-                    height: isMobile ? cameraWidth : cameraHeight,
-                    facingMode: "user",
+                    facingMode: "user", // フロントカメラ
                 }
             }
 
@@ -39,12 +30,20 @@
             const takephoto = document.getElementById("takephoto");
             const photojudge = document.getElementById("photojudge");
 
-            canvas.width = cameraWidth;
-            canvas.height = cameraHeight;
+            // videoの実際の幅と高さを取得
+            const videoWidth = video.videoWidth;
+            const videoHeight = video.videoHeight;
+
+            // canvasのサイズをvideoのサイズと一致させる
+            canvas.width = videoWidth;
+            canvas.height = videoHeight;
 
             const ctx = canvas.getContext("2d");
-            ctx.drawImage(video, 0, 0, cameraWidth, cameraHeight);
 
+            // videoをcanvasに描画（元のアスペクト比を維持）
+            ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+
+            // 撮影後の表示調整
             video.style.display = 'none';
             takephoto.style.display = 'none';
             canvas.style.display = 'block';
@@ -65,9 +64,13 @@
 
         function photoupload() {
             const canvas = document.getElementById("canvas");
-            const data = canvas.toDataURL('image/jpeg', 0.8); // JPEGに変更し画質を80%に
+            const data = canvas.toDataURL('image/jpeg', 0.8);
             console.log(data);
         }
+
+        $(document).ready(function () {
+            incameraInitSmartphoneSupport();
+        });
     </script>
 </head>
 
@@ -88,8 +91,9 @@
     </div>
 
     <style>
-        video {
-            width: 100%;
+        video,
+        canvas {
+            max-width: 100%;
             height: auto;
         }
     </style>
