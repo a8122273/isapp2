@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="../lib/jquery.min.js"></script>
     <script>
         const cameraWidth = 400;
@@ -35,22 +36,14 @@
         const shoot = () => {
             const video = document.getElementById("camera");
             const canvas = document.getElementById("canvas");
+            const takephoto = document.getElementById("takephoto");
+            const photojudge = document.getElementById("photojudge");
 
-            // canvasサイズ設定
             canvas.width = cameraWidth;
             canvas.height = cameraHeight;
 
-            // 描画オブジェクト取得
             const ctx = canvas.getContext("2d");
-
-            // 動画から画像を描画
-            ctx.drawImage(
-                video,
-                0,
-                0,
-                cameraWidth,
-                cameraHeight
-            );
+            ctx.drawImage(video, 0, 0, cameraWidth, cameraHeight);
 
             video.style.display = 'none';
             takephoto.style.display = 'none';
@@ -61,17 +54,19 @@
         function retake() {
             const video = document.getElementById("camera");
             const canvas = document.getElementById("canvas");
+            const takephoto = document.getElementById("takephoto");
+            const photojudge = document.getElementById("photojudge");
 
             video.style.display = 'block';
             takephoto.style.display = 'block';
             canvas.style.display = 'none';
             photojudge.style.display = 'none';
         }
+
         function photoupload() {
             const canvas = document.getElementById("canvas");
-            const data = canvas.toDataURL('image/png');
+            const data = canvas.toDataURL('image/jpeg', 0.8); // JPEGに変更し画質を80%に
             console.log(data);
-
         }
     </script>
 </head>
@@ -86,13 +81,18 @@
     </div>
     <div>
         <input id="takephoto" type="button" value="撮影" onclick="shoot()">
-        <div id="photojudge">
+        <div id="photojudge" style="display:none;">
             <input type="button" value="撮り直し" onclick="retake()">
             <input type="button" value="決定" onclick="photoupload()">
         </div>
-
-
     </div>
+
+    <style>
+        video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </body>
 
 </html>
