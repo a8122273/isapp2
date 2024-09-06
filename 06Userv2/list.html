@@ -27,10 +27,37 @@
                 html = html + '<td>' + object.id + '</td>';
                 html = html + '<td>' + object.name + '</td>';
                 html = html + '<td>' + '<a href="update.html?userid=' + object.id + '">変更</a>' + '</td>';
+                html = html + '<td>' + `<button class="button_delete" onclick="execDelete('${object.id}')">削除</button>` + '</td>';
                 html = html + '</tr>';
+
             }
             html = html + '</table>';
             document.getElementById('result').innerHTML = html;
+        }
+
+
+        async function execDelete(userID) {
+            //var userID = document.getElementsByClassName("button_delete").value
+            console.log(userID);
+            var ans = window.confirm("本当にいいんですね？");
+            console.log(ans);
+            if (ans == true) {
+                var sql = `delete from Users where id="${userID}";`
+                var objects = await osql.connect(sql);
+                await execSelect();
+            } else {
+                alert("キャンセルされました");
+            }
+        }
+
+
+
+        function ButtonBPressed() {
+            var userid = document.getElementById('tf1').value;
+            var sql = `delete from Users where id="${userid}";`;
+            var objects = osql.connect(sql);
+            console.log(objects);
+            execSelect();
         }
     </script>
 
@@ -38,6 +65,10 @@
 
 <body>
     <h1>Users</h1>
+    <hr>
+    ID:<input id="tf1" value="" type="textfield">
+    <button onclick="ButtonBPressed()">削除</button>
+    <hr>
     <p id="result">xxxx</p>
 </body>
 

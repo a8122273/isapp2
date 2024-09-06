@@ -9,15 +9,35 @@
     <script type="text/javascript" src="../lib/osql.js"></script>
 
     <script>
+        $().ready(function () {
+            init();
+        });
         osql.requireLogin();//すべてのページに入れる．google認証をして，osql.connect()や，osql.getMe()を使えるようにしてくれる．
+        function init() {
+            var name = sessionStorage.getItem('username');
+            document.getElementById("welcome").innerHTML = "ようこそ" + name + "さん";
+        }
+
+        function ButtonAPressed() {
+            var name = sessionStorage.getItem('userid');
+            location.href = `update.html?userid=${name}`;
+        }
+
+        function ButtonBPressed() {
+            var name = sessionStorage.getItem('userid');
+            location.href = 'tweet.html?userid=' + name;
+        }
     </script>
 
 </head>
 
 <body>
     <h1>ユーザトップ</h1>
-    <p id="welcome">ようこそxxさん</p>
+    <p id="welcome"></p>
     <hr>
+    <button onclick="ButtonAPressed()">ユーザー情報変更</button>
+    <hr>
+    <button onclick="ButtonBPressed()">ツイートする</button>
 
 </body>
 
