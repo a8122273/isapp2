@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>OutCameraTest</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script>
+        let localStream;
+        const constraints = {
+            video: {
+                width: 640,
+                height: 480,
+                facingMode: 'user' // デフォルトはインカメラ
+            },
+            audio: false
+        };
+
+        const getStream = (isUser) => {
+            // 直前のストリームを停止する
+            if (localStream !== undefined) {
+                localStream.getVideoTracks().forEach((camera) => {
+                    camera.stop();
+                    console.log("camera stop");
+                });
+            }
+
+            // 再読み込み
+            constraints.video.facingMode = isUser ? 'user' : { exact: 'environment' }
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    localStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                }).catch(e => {
+                    console.log(e);
+                })
+        }
+
+        const video = document.getElementById('video');
+        getStream(true);
+
+        let cameraFacingIsUser = true;
+        let facingText = document.getElementById('camera-facing');
+        facingText.innerText = "インカメラ";
+        document.getElementById('btn').onclick = () => {
+            if (cameraFacingIsUser) {
+                facingText.innerText = "アウトカメラ";
+                cameraFacingIsUser = false;
+                getStream(false);
+            } else {
+                facingText.innerText = "インカメラ";
+                cameraFacingIsUser = true;
+                getStream(true);
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="content_wrapper">
+        <h1>WEBカメラの映像を表示</h1>
+        <div class="video-container">
+            <video id="video" autoplay muted playsinline></video>
+        </div>
+        <div>
+            <button id="btn">カメラ切り替え</button>
+            <span id="camera-facing"></span>
+        </div>
+    </div>
+    <script src="./script.js" defer></script>
+</body>
+
+</html>
