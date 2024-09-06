@@ -5,12 +5,10 @@
         const cameraWidth = 300;
         const cameraHeight = 400;
 
-        const outcameraInitSmartphoneSupport = () => {
-            const video = document.getElementById("camera");
-
+        const outcameraInitSmartphoneSupport = (status) => {
             //スマホからの閲覧か
             const isMobile = navigator.userAgent.match(/iPhone|Android/);
-
+            const video = document.getElementById("camera");
             const cameraSetting = {
                 audio: false,
                 video: {
@@ -31,7 +29,7 @@
         }
 
         const incameraInitSmartphoneSupport = () => {
-            const video = document.getElementById("camera");
+            const video = document.getElementById("camera2");
 
             //スマホからの閲覧か
             const isMobile = navigator.userAgent.match(/iPhone|Android/);
@@ -55,11 +53,11 @@
                 });
         }
 
-        const shoot = (x, y) => {
+        const shoot = (number) => {
             //video要素
             const video = document.getElementById("camera");
             //canvas要素
-            const canvas = document.getElementById("canvas");
+            const canvas = document.getElementById("canvas" + number);
             //canvas要素の大きさを変更
             canvas.width = cameraWidth;
             canvas.height = cameraHeight;
@@ -69,8 +67,8 @@
             //描画する
             ctx.drawImage(
                 video,          // データソース 
-                x,              // 描画開始x座標  
-                y,              // 描画開始y座標
+                0,              // 描画開始x座標  
+                0,              // 描画開始y座標
                 cameraWidth,    // 描画横サイズ
                 cameraHeight    // 描画縦サイズ
             );
@@ -80,21 +78,21 @@
 <body>
     <div>
         <input type="button" value="カメラ起動" onclick="outcameraInitSmartphoneSupport()">
-        <input type="button" value="撮影" onclick="shoot(0,0)">
+        <input type="button" value="撮影" onclick="shoot(1)">
     </div>
     <div>
         <video id="camera" autoplay muted playsinline></video>
-        <canvas id="canvas" wcrossorigin="anonymous"></canvas>
+        <canvas id="canvas1" wcrossorigin="anonymous"></canvas>
     </div>
 
     <br>
     <div>
         <input type="button" value="カメラ起動" onclick="incameraInitSmartphoneSupport()">
-        <input type="button" value="撮影" onclick="shoot(0,400)">
+        <input type="button" value="撮影" onclick="shoot(2)">
     </div>
     <div>
-        <video id="camera" autoplay muted playsinline></video>
-        <canvas id="canvas" wcrossorigin="anonymous"></canvas>
+        <video id="camera2" autoplay muted playsinline></video>
+        <canvas id="canvas2" wcrossorigin="anonymous"></canvas>
     </div>
 </body>
 
