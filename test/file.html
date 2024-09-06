@@ -15,7 +15,7 @@
                     //スマホの場合は縦横を逆に設定する
                     width: isMobile ? cameraHeight : cameraWidth,
                     height: isMobile ? cameraWidth : cameraHeight,
-                    facingMode: "environment",
+                    facingMode: "user",
                 }
             }
 
@@ -40,7 +40,7 @@
                     //スマホの場合は縦横を逆に設定する
                     width: isMobile ? cameraHeight : cameraWidth,
                     height: isMobile ? cameraWidth : cameraHeight,
-                    facingMode: "environment",
+                    facingMode: "user",
                 }
             }
 
@@ -76,6 +76,7 @@
 </head>
 
 <body>
+    v２
     <div>
         <input type="button" value="カメラ起動" onclick="outcameraInitSmartphoneSupport()">
         <input type="button" value="撮影" onclick="shoot(1)">
