@@ -1,0 +1,98 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script>
+        const cameraWidth = 400;
+        const cameraHeight = 800;
+
+        $(document).ready(function () {
+            incameraInitSmartphoneSupport();
+        });
+
+        const incameraInitSmartphoneSupport = () => {
+            const video = document.getElementById("camera");
+            const isMobile = navigator.userAgent.match(/iPhone|Android/);
+
+            const cameraSetting = {
+                audio: false,
+                video: {
+                    width: isMobile ? cameraHeight : cameraWidth,
+                    height: isMobile ? cameraWidth : cameraHeight,
+                    facingMode: "user",
+                }
+            }
+
+            navigator.mediaDevices.getUserMedia(cameraSetting)
+                .then((mediaStream) => {
+                    video.srcObject = mediaStream;
+                })
+                .catch((err) => {
+                    console.log(err.toString());
+                });
+        }
+
+        const shoot = () => {
+            const video = document.getElementById("camera");
+            const canvas = document.getElementById("canvas");
+
+            // canvasサイズ設定
+            canvas.width = cameraWidth;
+            canvas.height = cameraHeight;
+
+            // 描画オブジェクト取得
+            const ctx = canvas.getContext("2d");
+
+            // 動画から画像を描画
+            ctx.drawImage(
+                video,
+                0,
+                0,
+                cameraWidth,
+                cameraHeight
+            );
+
+            video.style.display = 'none';
+            takephoto.style.display = 'none';
+            canvas.style.display = 'block';
+            photojudge.style.display = 'block';
+        }
+
+        function retake() {
+            const video = document.getElementById("camera");
+            const canvas = document.getElementById("canvas");
+
+            video.style.display = 'block';
+            takephoto.style.display = 'block';
+            canvas.style.display = 'none';
+            photojudge.style.display = 'none';
+        }
+        function photoupload() {
+            const canvas = document.getElementById("canvas");
+            const data = canvas.toDataURL('image/png');
+            console.log(data);
+
+        }
+    </script>
+</head>
+
+<body>
+    v1<br>
+    正面カメラ
+
+    <div id="frontimg">
+        <video id="camera" autoplay muted playsinline></video>
+        <canvas id="canvas" style="display:none;" wcrossorigin="anonymous"></canvas>
+    </div>
+    <div>
+        <input id="takephoto" type="button" value="撮影" onclick="shoot()">
+        <div id="photojudge">
+            <input type="button" value="撮り直し" onclick="retake()">
+            <input type="button" value="決定" onclick="photoupload()">
+        </div>
+
+
+    </div>
+</body>
+
+</html>
