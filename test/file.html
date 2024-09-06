@@ -8,7 +8,7 @@
         const outcameraInitSmartphoneSupport = (status) => {
             //スマホからの閲覧か
             const isMobile = navigator.userAgent.match(/iPhone|Android/);
-            const video = document.getElementById("camera");
+            const video = document.getElementById("camera1");
             const cameraSetting = {
                 audio: false,
                 video: {
@@ -55,7 +55,7 @@
 
         const shoot = (number) => {
             //video要素
-            const video = document.getElementById("camera");
+            const video = document.getElementById("camera" + number);
             //canvas要素
             const canvas = document.getElementById("canvas" + number);
             //canvas要素の大きさを変更
@@ -81,7 +81,7 @@
         <input type="button" value="撮影" onclick="shoot(1)">
     </div>
     <div>
-        <video id="camera" autoplay muted playsinline></video>
+        <video id="camera1" autoplay muted playsinline></video>
         <canvas id="canvas1" wcrossorigin="anonymous"></canvas>
     </div>
 
