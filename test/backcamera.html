@@ -11,7 +11,10 @@
             const cameraSetting = {
                 audio: false,
                 video: {
-                    facingMode: "enviroment", // カメラ
+                    facingMode: "enviroment", // アウトカメラ
+                    //解像度をここで指定
+                    // width: 300,
+                    // height: 400
                 }
             }
 
@@ -77,6 +80,7 @@
 <body>
     v1<br>
     背面カメラ
+    <br>大学のPCにSumatraを写してPC番号が映るように写真を撮ってください
 
     <div id="backimg">
         <video id="camera" autoplay muted playsinline></video>
