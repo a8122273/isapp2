@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="../lib/jquery.min.js"></script>
     <script>
-        const incameraInitSmartphoneSupport = () => {
+        const outcameraInitSmartphoneSupport = () => {
             const video = document.getElementById("camera");
             const isMobile = navigator.userAgent.match(/iPhone|Android/);
 
@@ -32,6 +32,9 @@
             const canvas = document.getElementById("canvas");
             const takephoto = document.getElementById("takephoto");
             const photojudge = document.getElementById("photojudge");
+            const confirmation = document.getElementById("confirmation");
+            const explanation = document.getElementById("explanation");
+
 
             // videoの実際の幅と高さを取得
             const videoWidth = video.videoWidth;
@@ -49,8 +52,10 @@
             // 撮影後の表示調整
             video.style.display = 'none';
             takephoto.style.display = 'none';
+            explanation.style.display = 'none';
             canvas.style.display = 'block';
             photojudge.style.display = 'block';
+            confirmation.style.display = 'block';
         }
 
         function retake() {
@@ -70,9 +75,40 @@
             const data = canvas.toDataURL('image/jpeg', 0.8);
             console.log(data);
         }
+        var sec = 1;
+        var min = 1;
+        var timer;
+        var state = '停止中';
+
+        function Countdown() {
+            if (state == '停止中') {
+                timer = setInterval(tick, 1000);
+                state = '動作中';
+            } else if (state == '動作中') {
+                clearInterval(timer);
+                state = '停止中';
+            }
+        }
+
+        function tick() {
+            sec = sec - 1;
+            if (min == 0 && sec == 0) {
+                clearInterval(timer);
+                // 時間切れ時は最初の画面に戻る
+                location.href = "frontcamera.html";
+            }
+            else if (sec == 0) {
+                min = min - 1;
+                sec = 59;
+            }
+
+
+            document.getElementById('time').innerHTML = min + '分' + sec + '秒';
+        }
 
         $(document).ready(function () {
-            incameraInitSmartphoneSupport();
+            outcameraInitSmartphoneSupport();
+            Countdown();
         });
     </script>
 </head>
@@ -80,17 +116,19 @@
 <body>
     v1<br>
     背面カメラ
-    <br>大学のPCにSumatraを写してPC番号が映るように写真を撮ってください
-
+    <br>
+    <p id="explanation">大学のPCにSumatraを写してPC番号が映るように写真を撮ってください</p>
+    <p id="confirmation" style="display:none;">いいですか？</p>
+    <div id="time">1分0秒</div>
     <div id="backimg">
         <video id="camera" autoplay muted playsinline></video>
         <canvas id="canvas" style="display:none;" wcrossorigin="anonymous"></canvas>
     </div>
     <div>
-        <input id="takephoto" type="button" value="撮影" onclick="shoot()">
+        <input id="takephoto" type="button" value="📷" onclick="shoot()">
         <div id="photojudge" style="display:none;">
             <input type="button" value="撮り直し" onclick="retake()">
-            <input type="button" value="決定" onclick="photoupload()">
+            <input type="button" value="OK" onclick="photoupload()">
         </div>
     </div>
 
